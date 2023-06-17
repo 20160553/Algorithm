@@ -8,7 +8,7 @@ public class Main {
 
     static int[][] dp;
     static int[][] map;
-    static int[] dy = new int[] {1, 0, -1, 0};
+    static int[] dy = new int[] {-1, 0, 1, 0};
     static int[] dx = new int[] {0, 1, 0, -1};
     
     public static void main(String[] args) throws NumberFormatException, IOException {
