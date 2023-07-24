@@ -27,20 +27,20 @@ class Solution {
         =========================================
         
         경로 추출
-        function hanoi(int n, boolean startPosition, boolean goToEnd)
-        F(n, false, true) = [F(n - 1, true, false), [1, 3], F(n - 1, )]
+        function hanoi(n, s, e)
+        f(n, s, e) = f(n - 1, s, h)(s, e)f(n - 1, h, e) // h = 3 - (s + e) % 3
         */
         
         ArrayList<int[]> list = hanoi(n, 1, 3);
         int[][] answer = new int[list.size()][2];
-        // StringBuilder sb = new StringBuilder();
+         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
             int[] current = list.get(i);
-            // sb.append(current[0] + ", " + current[1] + "\n");
+             sb.append(current[0] + ", " + current[1] + "\n");
             answer[i][0] = current[0];
             answer[i][1] = current[1];
         }
-        // System.out.println(sb);
+        System.out.println(sb);
         
         return answer;
     }
