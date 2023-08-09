@@ -31,7 +31,7 @@ public class Main {
             }
             else end = mid - 1;
         }
-        return start;
+        return end;
     }
 
     public static void main(String[] args) throws IOException {
@@ -66,7 +66,7 @@ public class Main {
         Collections.sort(combinationList2);
 
         for (Long weight: combinationList1) {
-            answer += binarySearchUpperBounds(combinationList2, c - weight);
+            answer += binarySearchUpperBounds(combinationList2, c - weight) + 1;
         }
 
         System.out.println(answer);
