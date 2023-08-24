@@ -16,14 +16,12 @@ public class Main {
 
         page = new int[n];
 
-        int end = 0;
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
             page[i] = Integer.valueOf(st.nextToken());
-            end += page[i];
         }
 
-        int start = 0, mid = 0;
+        int start = 0, end = 2_000_000, mid = 0;
         //구역 나누기. 맨 처음 구역은 전체 1개
         int district = 0, districtSum = 0;
         while (start <= end) {
