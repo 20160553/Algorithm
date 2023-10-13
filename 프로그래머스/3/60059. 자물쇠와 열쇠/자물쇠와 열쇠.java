@@ -48,8 +48,8 @@ class Solution {
                 usedKey = rotateKey(usedKey);
             
             //검사
-            search1: for (int h = -m; h < n; h++) {
-                search2: for (int w = -m; w < n; w++) {
+            search1: for (int h = -m + 1; h < n; h++) {
+                search2: for (int w = -m + 1; w < n; w++) {
                     int correctNum = 0;
                     search3: for (int dy = 0; dy < m; dy++) {
                         search4: for (int dx = 0; dx < m; dx++) {
