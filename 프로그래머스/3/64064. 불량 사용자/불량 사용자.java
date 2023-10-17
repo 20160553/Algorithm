@@ -45,16 +45,12 @@ class Solution {
         불량 사용자 (완탐?)
         1. 길이비교
         2. 내용비교
-        
-        
         */
         
         int answer = 0;
         v = new boolean[user_id.length];
-        LinkedList<String> id_list = new LinkedList<String>();
         detectBannedId(user_id, banned_id, 0);
         
-        System.out.println(name_set);
         answer = name_set.size();
         return answer;
     }
