@@ -14,23 +14,18 @@ class Solution {
         
         int answer = 0, n = order.length, current = 1;
         
-        while (current < n + 1) {
-            if (!stack.isEmpty() && stack.peek() == order[answer]) {
+        for (int i = 0; i < n; i++) {
+            while (current < order[i])
+                stack.push(current++);
+            if (current == order[i]) {
+                current++;
+                answer++;
+            } else if (!stack.isEmpty() && stack.peek() == order[i]) {
                 stack.pop();
                 answer++;
-                continue;
-            }
-            if (order[answer] != current) stack.push(current);
-            else answer++;
-            current++;
+            } else return answer;
         }
         
-        while (!stack.isEmpty()) {
-            if (stack.peek() != order[answer]) 
-                break;
-            stack.pop();
-            answer++;
-        }
         return answer;
     }
 }
