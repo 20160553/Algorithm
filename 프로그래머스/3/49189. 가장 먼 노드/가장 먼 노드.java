@@ -48,9 +48,10 @@ class Solution {
             } else answer++;
             
             v[dest] = true;
-            for (int i = 2; i <= n; i++) {
-                if (v[i]) continue;
-                if (costs[dest].containsKey(i) && (!costs[1].containsKey(i) || costs[1].get(i) > costs[dest].get(i) + cost)) {
+            
+            for (int i: costs[dest].keySet()) {
+                if (v[i] || i == 1) continue;
+                if ((!costs[1].containsKey(i) || costs[1].get(i) > costs[dest].get(i) + cost)) {
                         costs[1].put(i, costs[dest].get(i) + cost);
                         pq.add(new int[] {i, costs[1].get(i)});
                 } 
