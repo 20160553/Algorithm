@@ -64,7 +64,7 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
+        StringBuilder sb = new StringBuilder();
 
         int n, m, k;
         n = Integer.parseInt(st.nextToken());
@@ -91,8 +91,10 @@ public class Main {
             if (a == 1) {
                 segmentTree.replace(b, c);
             } else {
-                System.out.println(segmentTree.getSum(b, c));
+                sb.append(segmentTree.getSum(b, c)+"\n");
             }
         }
+
+        System.out.println(sb);
     }
 }
