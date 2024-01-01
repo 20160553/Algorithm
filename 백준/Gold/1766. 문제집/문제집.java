@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
@@ -20,7 +21,7 @@ public class Main {
         int[] inDegree = new int[n + 1];
 
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        LinkedList<LinkedList<Integer>> edges = new LinkedList<>();
+        ArrayList<LinkedList<Integer>> edges = new ArrayList<>();
         for (int i = 0; i <= n; i++)
             edges.add(new LinkedList<>());
 
