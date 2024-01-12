@@ -21,18 +21,15 @@ public class Main {
         int n = Integer.parseInt(in.readLine());
         int[] a = Arrays.stream(in.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         int[] dp = a.clone();
-
+        int answer = a[0];
         for (int i = 1; i < a.length; i++) {
             for (int j = 0; j < i; j++) {
-                if (a[j] < a[i] && dp[i] < dp[j] + a[i]) {
-                    dp[i] = dp[j] + a[i];
+                if (a[j] < a[i]) {
+                    dp[i] = Math.max(dp[j] + a[i], dp[i]);
                 }
             }
-        }
-
-        int answer = 0;
-        for (int i = 0; i < a.length; i++)
             answer = Math.max(answer, dp[i]);
+        }
 
         System.out.println(answer);
     }
