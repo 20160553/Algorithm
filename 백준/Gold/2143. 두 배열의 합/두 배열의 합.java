@@ -6,36 +6,6 @@ import java.util.Collections;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static public class SegmentTree {
-        int start, end, sum = 0;
-        SegmentTree left, right;
-
-        public SegmentTree(int start, int end, int[] arr) {
-            this.start = start;
-            this.end = end;
-            if (start == end) {
-                this.sum = arr[start];
-            } else {
-                int middle = (start + end) / 2;
-                this.left = new SegmentTree(start, middle, arr);
-                this.right = new SegmentTree(middle + 1, end, arr);
-                this.sum = this.left.sum + this.right.sum;
-            }
-        }
-
-        public int getSum(int start, int end) {
-            if (this.start > end || this.end < start) {
-                return 0;
-            }
-            if (start <= this.start && this.end <= end) {
-                return this.sum;
-            }
-            return this.left.getSum(start, end) + this.right.getSum(start, end);
-        }
-
-    }
-
     public static void main(String[] args) throws IOException {
 
         /*
@@ -66,6 +36,8 @@ public class Main {
         st = new StringTokenizer(in.readLine());
         for (int i = 0; i < n; i++) {
             a[i] = Integer.parseInt(st.nextToken());
+            if (i > 0)
+                a[i] += a[i - 1];
         }
 
         m = Integer.parseInt(in.readLine());
@@ -73,12 +45,9 @@ public class Main {
         st = new StringTokenizer(in.readLine());
         for (int i = 0; i < m; i++) {
             b[i] = Integer.parseInt(st.nextToken());
+            if (i > 0)
+                b[i] += b[i - 1];
         }
-
-        SegmentTree s_a, s_b;
-
-        s_a = new SegmentTree(0, n - 1, a);
-        s_b = new SegmentTree(0, m - 1, b);
 
         long answer = 0;
 
@@ -87,13 +56,17 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
-                a_sum.add(s_a.getSum(i, j));
+                int sum = a[j];
+                if (i > 0) sum -= a[i - 1];
+                a_sum.add(sum);
             }
         }
 
         for (int i = 0; i < m; i++) {
             for (int j = i; j < m; j++) {
-                b_sum.add(s_b.getSum(i, j));
+                int sum = b[j];
+                if (i > 0) sum -= b[i - 1];
+                b_sum.add(sum);
             }
         }
 
@@ -104,10 +77,8 @@ public class Main {
             int cnt = 0;
             int left = 0;
             int right = b_sum.size() - 1;
-            int middle = (left + right) / 2;
-
             while (left <= right) {
-                middle = (left + right) / 2;
+                int middle = (left + right) / 2;
                 if (i + b_sum.get(middle) <= t) {
                     left = middle + 1;
                 } else {
@@ -119,7 +90,7 @@ public class Main {
             left = 0;
             right = b_sum.size() - 1;
             while (left <= right) {
-                middle = (left + right) / 2;
+                int middle = (left + right) / 2;
                 if (i + b_sum.get(middle) < t) {
                     left = middle + 1;
                 } else {
