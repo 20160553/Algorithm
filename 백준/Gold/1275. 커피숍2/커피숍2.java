@@ -11,7 +11,7 @@ public class Main {
         long sum;
         SegmentTree left = null, right = null;
 
-        public SegmentTree(int start, int end, long[] arr) {
+        public SegmentTree(int start, int end, int[] arr) {
             this.start = start;
             this.end = end;
             if (start == end) {
@@ -34,7 +34,7 @@ public class Main {
             return this.left.getSum(start, end) + this.right.getSum(start, end);
         }
 
-        public long changeValue(int idx, long afterChangedNum) {
+        public long changeValue(int idx, int afterChangedNum) {
             if (this.end < idx || this.start > idx) {
                 return this.sum;
             }
@@ -75,13 +75,12 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         q = Integer.parseInt(st.nextToken());
 
-        long[] arr = Arrays.stream(in.readLine().split(" ")).mapToLong(Long::parseLong).toArray();
+        int[] arr = Arrays.stream(in.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         SegmentTree root = new SegmentTree(1, arr.length, arr);
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < q; i++) {
-            int x, y, a;
-            long b;
+            int x, y, a, b;
             st = new StringTokenizer(in.readLine());
             x = Integer.parseInt(st.nextToken());
             y = Integer.parseInt(st.nextToken());
@@ -91,7 +90,7 @@ public class Main {
                 y = temp;
             }
             a = Integer.parseInt(st.nextToken());
-            b = Long.parseLong(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
 
             sb.append(root.getSum(x, y) + "\n");
             root.changeValue(a, b);
