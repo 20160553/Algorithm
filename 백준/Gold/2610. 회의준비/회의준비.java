@@ -11,7 +11,7 @@ public class Main {
     static private int find(int i, int[] parents) {
         if (parents[i] == i)
             return i;
-        return find(parents[i], parents);
+        return parents[i] = find(parents[i], parents);
     }
 
     static private void union(int a, int b, int[] parents, int[] depth) {
