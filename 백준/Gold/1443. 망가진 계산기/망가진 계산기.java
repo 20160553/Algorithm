@@ -56,9 +56,9 @@ public class Main {
         int answer = -1;
 
         int cnt = 1;
+        HashSet<Integer> candidates = new HashSet<>();
         while(!q.isEmpty() && cnt <= p) {
             int qSize = q.size();
-            HashSet<Integer> candidates = new HashSet<>();
             for (int i = 0; i < qSize; i++) {
                 int now = q.poll();
                 if (cnt == p)
@@ -71,6 +71,7 @@ public class Main {
                 }
             }
             q.addAll(candidates);
+            candidates.clear();
             cnt++;
         }
 
