@@ -99,15 +99,10 @@ public class Main {
 
             for (int[] line: lines.get(stopover)) {
                 int next = line[0];
-
                 int nextCost = stopoverCost;
                 if (line[1] > cost) nextCost++;
 
-                if (next == stopover) continue;
-                int currentCost = dist[next];
-
-                if (nextCost > k) continue;
-                if (currentCost > nextCost) {
+                if (nextCost < dist[next]) {
                     dist[next] = nextCost;
                     pq.add(new int[]{next, nextCost});
                 }
