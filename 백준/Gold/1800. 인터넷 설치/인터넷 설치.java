@@ -39,15 +39,21 @@ public class Main {
 
         int[] edges = new int[p + 1];
 
-        ArrayList<int[]> lines = new ArrayList<>();
+        ArrayList<ArrayList<int[]>> lines = new ArrayList<>();
+        for (int i = 0; i <= n; i++)
+            lines.add(new ArrayList<>());
+
         for (int i = 0; i < p; i++) {
             int[] line = Arrays.stream(in.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-            lines.add(line);
+            lines.get(line[0]).add(new int[]{line[1], line[2]});
+            lines.get(line[1]).add(new int[]{line[0], line[2]});
             edges[i] = line[2];
         }
 
         edges[p] = 0;
         Arrays.sort(edges);
+
+        int[] dist = new int[n + 1];
 
         int left = 0, right = p;
         if (p >= k)
@@ -55,7 +61,7 @@ public class Main {
         while (left <= right) {
             int middle = (left + right) / 2;
 
-            if (dijkstra(edges[middle], lines, n, k)) {
+            if (dijkstra(edges[middle], lines, n, k, dist)) {
                 right = middle - 1;
                 answer = edges[middle];
             } else {
@@ -66,60 +72,50 @@ public class Main {
         System.out.println(answer);
     }
 
-    private static boolean dijkstra(int cost, ArrayList<int[]> lines, int n, int k) {
-        int[][] costs = new int[n + 1][n + 1];
-
-        for (int i = 0; i <= n; i++) {
-            for (int j = 0; j <= n; j++) {
-                costs[i][j] = MAX;
-            }
-        }
-        for (int[] line : lines) {
-            if (line[2] > cost) {
-                costs[line[0]][line[1]] = Math.min(costs[line[0]][line[1]], 1);
-                costs[line[1]][line[0]] = Math.min(costs[line[1]][line[0]], 1);
-            } else {
-                costs[line[0]][line[1]] = 0;
-                costs[line[1]][line[0]] = 0;
-            }
-        }
-
-        if (costs[1][n] <= k)
-            return true;
-
-        //Dijkstra
+    private static boolean dijkstra(int cost, ArrayList<ArrayList<int[]>> lines, int n, int k, int[] dist) {
         PriorityQueue<int[]> pq = new PriorityQueue<int[]>(Comparator.comparingInt(o -> o[1]));
 
-        for (int i = 2; i < n; i++) {
-            if (costs[1][i] <= k) {
-                pq.add(new int[]{i, costs[1][i]});
-            }
+        Arrays.fill(dist, MAX);
+
+        for (int[] line : lines.get(1)) {
+            if (line[1] > cost)
+                dist[line[0]] = 1;
+            else
+                dist[line[0]] = 0;
+            pq.add(new int[]{line[0], dist[line[0]]});
         }
+        dist[1] = 0;
+
+        if (dist[n] <= k)
+            return true;
 
         while (!pq.isEmpty()) {
             int[] stopoverInfo = pq.poll();
             int stopover = stopoverInfo[0];
             int stopoverCost = stopoverInfo[1];
 
-            if (costs[1][stopover] < stopoverCost)
+            if (dist[stopover] < stopoverCost)
                 continue;
 
-            for (int next = 2; next <= n; next++) {
-                if (next == stopover) continue;
-                if (costs[stopover][next] == MAX) continue;
+            for (int[] line: lines.get(stopover)) {
+                int next = line[0];
 
-                int currentCost = costs[1][next];
-                int nextCost = stopoverCost + costs[stopover][next];
+                int nextCost = stopoverCost;
+                if (line[1] > cost) nextCost++;
+
+                if (next == stopover) continue;
+                int currentCost = dist[next];
 
                 if (nextCost > k) continue;
                 if (currentCost > nextCost) {
-                    costs[1][next] = nextCost;
+                    dist[next] = nextCost;
                     pq.add(new int[]{next, nextCost});
                 }
             }
+
         }
 
-        return costs[1][n] <= k;
+        return dist[n] <= k;
     }
 
 }
