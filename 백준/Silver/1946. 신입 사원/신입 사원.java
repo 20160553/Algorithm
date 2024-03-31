@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -31,7 +32,8 @@ public class Main {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-
+        StringTokenizer st;
+        
         int T = Integer.parseInt(in.readLine());
 
         for (int t = 0; t < T; t++) {
@@ -40,7 +42,9 @@ public class Main {
             int[][] scores = new int[n][2];
 
             for (int i = 0; i < n; i++) {
-                scores[i] = Arrays.stream(in.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+                st = new StringTokenizer(in.readLine());
+                for (int j = 0; j < 2; j++)
+                    scores[i][j] = Integer.parseInt(st.nextToken());
             }
 
             Arrays.sort(scores, Comparator.comparingInt(o -> o[0]));
