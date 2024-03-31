@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -33,16 +33,16 @@ public class Main {
         for (int t = 0; t < T; t++) {
             int n = Integer.parseInt(in.readLine());
             st = new StringTokenizer(in.readLine());
-            LinkedList<Integer> stack = new LinkedList<>();
+            ArrayList<Integer> stocks = new ArrayList<>();
 
             for (int i = 0; i < n; i++)
-                stack.push(Integer.parseInt(st.nextToken()));
+                stocks.add(Integer.parseInt(st.nextToken()));
 
-            int max = 0;
+            int max = stocks.get(n - 1);
             long answer = 0;
-            while (!stack.isEmpty()) {
-                int current = stack.pop();
-                if (current < max) {
+            for (int i = stocks.size() - 1; i >= 0; i--) {
+                int current = stocks.get(i);
+                if (current <= max) {
                     answer += max - current;
                 } else {
                     max = current;
