@@ -58,6 +58,7 @@ public class Main {
             answer++;
             q.add(new int[]{sy, sx});
             map[sy][sx] = -answer;
+            LinkedList<int[]> list = new LinkedList<>();
             while (!q.isEmpty()) {
                 int[] current = q.poll();
                 int cy = current[0];
@@ -72,14 +73,17 @@ public class Main {
                         System.out.println(answer);
                         return;
                     }
-                    if (map[ny][nx] != -answer) {
-                        if (map[ny][nx] != 1) {
-                            q.add(new int[]{ny, nx});
-                        }
-                        map[ny][nx] = -answer;
-                    }
+                    if (map[ny][nx] < 0) {
+                        continue;
+                    } else if (map[ny][nx] == 1) {
+                        list.add(new int[]{ny, nx});
+                    } else
+                        q.add(new int[]{ny, nx});
+                    map[ny][nx] = -answer;
                 }
             }
+            q.addAll(list);
+            list.clear();
         }
 
         System.out.println(answer);
