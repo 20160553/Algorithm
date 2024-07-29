@@ -20,25 +20,25 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        double l;
+        long l;
         int n, k;
-        l = Double.parseDouble(st.nextToken());
+        l = Long.parseLong(st.nextToken());
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
 
         StringBuilder answer = new StringBuilder();
 
-        double[] p = new double[n];
+        long[] p = new long[n];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            p[i] = Double.parseDouble(st.nextToken());
+            p[i] = Long.parseLong(st.nextToken());
         }
 
         int cnt = 0;
-        int idx = 0;
+        long idx = 0;
         boolean flag = p[n - 1] != l;
-        HashSet<Double> set = new HashSet<>();
+        HashSet<Long> set = new HashSet<>();
         mainLoop: while (cnt < k) {
             for (int i = 0; i < n; i++) {
                 boolean flag_1 = true;
