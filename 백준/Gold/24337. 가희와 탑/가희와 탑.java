@@ -32,54 +32,31 @@ public class Main {
             return;
         }
 
-        if (a > b) {
-            for (int i = 0; i <= remainCnt; i++) {
+        if (a == 1) {
+            heights[0] = maxHeight;
+            for (int i = 1; i <= n - b; i++) {
                 heights[i] = 1;
             }
-            for (int i = 0; i < b - 1; i++) {
-                heights[n - 1 - i] = i + 1;
-            }
-            for (int i = 0; i < a; i++) {
-                heights[remainCnt + i + 1] = i + 1;
-            }
-        } else if (a < b) {
-            if (a == 1) {
-                heights[0] = maxHeight;
-                for (int i = 1; i <= n - b; i++) {
-                    heights[i] = 1;
-                }
-                for (int i = 1; i < b; i++) {
-                    heights[n - i] = i;
-                }
-            }
-            else {
-                for (int i = 0; i <= remainCnt; i++) {
-                    heights[i] = 1;
-                }
-                for (int i = 1; i <= a - 1; i++) {
-                    heights[remainCnt + i] = i;
-                }
-                for (int i = 1; i < b; i++) {
-                    heights[n - i] = i;
-                }
-                heights[remainCnt + a] = maxHeight;
+            for (int i = 1; i < b; i++) {
+                heights[n - i] = i;
             }
         } else {
             for (int i = 0; i <= remainCnt; i++) {
                 heights[i] = 1;
             }
-            for (int i = 0; i < b - 1; i++) {
-                heights[n - 1 - i] = i + 1;
+            for (int i = 1; i <= a - 1; i++) {
+                heights[remainCnt + i] = i;
             }
-            for (int i = 0; i < a; i++) {
-                heights[remainCnt + i + 1] = i + 1;
+            for (int i = 1; i < b; i++) {
+                heights[n - i] = i;
             }
+            heights[remainCnt + a] = maxHeight;
         }
+
 
         for (int i = 0; i < n; i++) {
             sb.append(heights[i] + " ");
         }
         System.out.println(sb);
-
     }
 }
