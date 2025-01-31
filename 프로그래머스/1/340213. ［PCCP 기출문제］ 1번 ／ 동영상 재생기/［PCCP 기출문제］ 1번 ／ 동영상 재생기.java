@@ -18,11 +18,9 @@ class Solution {
         int m = second / 60;
         int s = second % 60;
         
-        if (m < 10) time += "0";
-        time += m;
+        time += String.format("%02d", m);
         time += ":";
-        if (s < 10) time += "0";
-        time += s;
+        time += String.format("%02d", s);
         return time;
     }
     
