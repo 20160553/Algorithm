@@ -1,9 +1,32 @@
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-class Road(val cost: Int, val start: Int, val dest: Int)
+fun dijkstra(start: Int, arr: Array<IntArray>) {
+    val pq: PriorityQueue<IntArray> = PriorityQueue { o1, o2 ->
+        return@PriorityQueue o1[1] - o2[1]
+    }
 
-class House(val roads: MutableList<Road> = mutableListOf())
+    val v = BooleanArray(arr.size)
+
+    for (i in arr.indices) {
+        if (arr[start][i] != Integer.MAX_VALUE)
+        pq.add(intArrayOf(i, arr[start][i]))
+    }
+
+    while (!pq.isEmpty()) {
+        val current = pq.poll()
+        v[current[0]] = true
+        for (i in arr.indices) {
+            if (i == current[0] || i == start) continue
+            if (arr[current[0]][i] == Integer.MAX_VALUE) continue
+            if (arr[start][i] > current[1] + arr[current[0]][i]) {
+                arr[start][i] = current[1] + arr[current[0]][i]
+                pq.add(intArrayOf(i, arr[start][i]))
+            }
+        }
+    }
+}
 
 fun main() {
     /*
@@ -18,36 +41,29 @@ fun main() {
     * 메모리제한 : 128MB => 128 * 10 ^ 6 Byte => 32 * 10 ^ 6 INT
     *
     * 플로이드 워샬 N * N * N => 10 ^ 9
+    *   => 이거 왜 통과? 흠...
     *
     * */
 
     val (n, m, x) = readln().split(" ").map { it.toInt() }
 
     val costs = Array(n) { IntArray(n) { Integer.MAX_VALUE } }
+    val reverseCosts = Array(n) { IntArray(n) { Integer.MAX_VALUE } }
 
     repeat(m) {
         val (start, dest, cost) = readln().split(" ").map { it.toInt() }
         costs[start - 1][dest - 1] = min(cost, costs[start - 1][dest - 1])
+        reverseCosts[dest - 1][start - 1] = min(cost, reverseCosts[dest - 1][start - 1])
     }
 
-    for (k in 0 until n) {
-        for (i in 0 until n) {
-            if (k == i) continue
-            for (j in 0 until n) {
-                if (i == j || k == j) continue
-
-                if (costs[i][k] == Integer.MAX_VALUE || costs[k][j] == Integer.MAX_VALUE)
-                    continue
-                costs[i][j] = min(costs[i][j], costs[i][k] + costs[k][j])
-            }
-        }
-    }
+    dijkstra(x - 1, costs)
+    dijkstra(x - 1, reverseCosts)
 
     var answer = 0
 
     for (i in 0 until n) {
         if (i == x - 1) continue
-        answer = max(answer, costs[i][x - 1] + costs[x - 1][i])
+        answer = max(answer, costs[x - 1][i] + reverseCosts[x - 1][i])
     }
     print(answer)
 }
