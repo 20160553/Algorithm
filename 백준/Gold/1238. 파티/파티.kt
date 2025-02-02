@@ -18,6 +18,7 @@ fun dijkstra(start: Int, arr: Array<IntArray>) {
         val current = pq.poll()
         v[current[0]] = true
         for (i in arr.indices) {
+            if (v[i]) continue
             if (i == current[0] || i == start) continue
             if (arr[current[0]][i] == Integer.MAX_VALUE) continue
             if (arr[start][i] > current[1] + arr[current[0]][i]) {
