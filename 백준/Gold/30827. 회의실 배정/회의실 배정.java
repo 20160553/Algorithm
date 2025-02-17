@@ -31,11 +31,7 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> {
-            if (o1[1] == o2[1])
-                return Integer.compare(o1[0], o2[0]);
-            return Integer.compare(o1[1], o2[1]);
-        });
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
@@ -46,10 +42,9 @@ public class Main {
 
         int answer = 0;
 
-        PriorityQueue<Integer> rooms = new PriorityQueue<>(Collections.reverseOrder());
-
+        Integer[] rooms = new Integer[k];
         for (int i = 0; i < k; i++) {
-            rooms.add(0);
+            rooms[i] = Integer.valueOf(0);
         }
 
         while (!pq.isEmpty()) {
@@ -57,19 +52,15 @@ public class Main {
             int s = c[0];
             int e = c[1];
 
-            Queue<Integer> temp = new LinkedList<>();
-            while (!rooms.isEmpty()) {
-                int r = rooms.poll();
-                boolean flag = false;
-                if (r < s) {
-                    r = e;
+            for (int i = 0; i < k; i++) {
+                if (rooms[i] < s) {
+                    rooms[i] = e;
                     answer++;
-                    flag = true;
+                    break;
                 }
-                temp.add(r);
-                if (flag) break;
             }
-            rooms.addAll(temp);
+
+            Arrays.sort(rooms, Comparator.reverseOrder());
         }
 
 
