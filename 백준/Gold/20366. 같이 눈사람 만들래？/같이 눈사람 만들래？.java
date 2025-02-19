@@ -1,37 +1,9 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    private static class Snowman implements Comparable<Snowman> {
-        int height;
-        HashSet<Integer> snowballs = new HashSet<>();
-
-        Snowman(int height) {
-            this.height = height;
-        }
-
-        void addSnowball(int snowball) {
-            this.snowballs.add(snowball);
-        }
-
-        boolean contains(HashSet<Integer> snowballs) {
-            for (int snowball : snowballs) {
-                if (this.snowballs.contains(snowball))
-                    return true;
-            }
-            return false;
-        }
-
-        @Override
-        public int compareTo( Snowman o) {
-            return Integer.compare(this.height, o.height);
-        }
-    }
 
     public static void main(String[] args) throws Exception {
 
@@ -54,37 +26,29 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int[] snowballs = new int[n];
-        ArrayList<Snowman> snowmans = new ArrayList<>();
-
         for (int i = 0; i < n; i++) {
             snowballs[i] = Integer.parseInt(st.nextToken());
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                Snowman snowman = new Snowman(snowballs[i] + snowballs[j]);
-                snowman.addSnowball(i);
-                snowman.addSnowball(j);
-                snowmans.add(snowman);
-            }
-        }
-
-        Collections.sort(snowmans);
+        Arrays.sort(snowballs);
 
         int answer = Integer.MAX_VALUE;
 
-        int l = 0;
+        for (int a = 0; a < n - 3; a++) {
+            for (int b = a + 3; b < n; b++) {
+                int c = a + 1;
+                int d = b - 1;
 
-        while (l < snowmans.size() - 1) {
-            Snowman lS = snowmans.get(l);
-            for (int r = l + 1; r < snowmans.size(); r++) {
-                Snowman rS = snowmans.get(r);
-                if (!lS.contains(rS.snowballs)) {
-                    answer = Math.min(rS.height - lS.height, answer);
-                    break;
+                while (c < d) {
+                    int h1 = snowballs[a] + snowballs[b];
+                    int h2 = snowballs[c] + snowballs[d];
+                    answer = Math.min(answer, Math.abs(h1 - h2));
+                    if (h1 > h2) {
+                        c++;
+                    } else
+                        d--;
                 }
             }
-            l++;
         }
 
         System.out.println(answer);
