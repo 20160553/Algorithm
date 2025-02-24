@@ -67,7 +67,10 @@ public class Main {
         *  => m * n -> 2 * 10 ^ 9 : 시간초과
         *
         * 2. 누적합 이용 가지치기
-        *  
+        *  => 통과는 됨 ㅋㅋ. 하지만 더 좋은 풀이가 있는 듯
+        *
+        * 3. DP
+        *
         *
         * */
 
@@ -75,10 +78,14 @@ public class Main {
         int n = in.nextInt();
         int[] arr = new int[n];
         int[] prefixSum = new int[n + 1];
+        int[][] results = new int[n + 1][n + 1];
 
         for (int i = 0; i < n; i++) {
             arr[i] = in.nextInt();
             prefixSum[i + 1] = prefixSum[i] + arr[i];
+            for (int j = 1; j <= n; j++) {
+                results[i + 1][j] = -1;
+            }
         }
         int m = in.nextInt();
 
@@ -88,7 +95,10 @@ public class Main {
             int s = in.nextInt();
             int e = in.nextInt();
 
-            answer.append(solve(s, e, arr, prefixSum)+"\n");
+            if (results[s][e] == -1) {
+                results[s][e] = solve(s, e, arr, prefixSum);
+            }
+            answer.append(results[s][e]+"\n");
         }
         System.out.println(answer);
     }
