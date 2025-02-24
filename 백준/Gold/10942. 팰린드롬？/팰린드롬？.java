@@ -1,105 +1,74 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
+    private  static int[][] determinePalindrome(int[] numbers) {
+        int[][] palindrome = new int[numbers.length][numbers.length];
 
-    static class FastIn {
-        BufferedReader br = null;
-        StringTokenizer st = null;
+        for (int i = 0; i < numbers.length; i++) {
+            palindrome[0][i] = 1;
 
-        public FastIn() {
-                br = new BufferedReader(new InputStreamReader(System.in));
-
+            if (i + 1 < numbers.length && numbers[i] == numbers[i + 1])
+                palindrome[1][i] = 1;
         }
 
-        public String next() {
-            if (st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (Exception e) {
-                    e.printStackTrace();
+        for (int size = 0; size < palindrome.length - 2; size++) {
+            for (int index = 1; index < numbers.length - size - 1; index++) {
+                if (palindrome[size][index] == 0) {
+                    continue;
+                }
+
+                if (numbers[index - 1] == numbers[index + size + 1]) {
+                    palindrome[size + 2][index - 1] = 1;
                 }
             }
-            return st.nextToken();
         }
-
-        public int nextInt() {
-            return Integer.parseInt(next());
-        }
+        return palindrome;
     }
 
-    private static int solve(int s, int e, int[] arr, int[] prefixSum) {
-        int m = (s + e) / 2;
-        if ((e - s + 1) % 2 == 0) {
-            if (prefixSum[e] - prefixSum[m] != prefixSum[m] - prefixSum[s - 1]) {
-                return 0;
-            }
-        } else {
-            if (prefixSum[e] - prefixSum[m] != prefixSum[m - 1] - prefixSum[s - 1]) {
-                return 0;
-            }
-        }
-
-
-        int l = s - 1, r = e - 1;
-
-        while (l < r) {
-            if (arr[l] != arr[r]) {
-                return 0;
-            }
-            l++;
-            r--;
-        }
-
-        return 1;
-    }
-
-    public static void main(String[] args) {
+    static BufferedReader br;
+    public static void main(String[] args) throws IOException {
         /*
-        * 자바 : 2.5초 제한
-        * 2억 5천만 이하 연산
-        *
-        * n <= 2_000,
-        * m <= 1_000_000
-        *
-        * 1. 완탐
-        *  => m * n -> 2 * 10 ^ 9 : 시간초과
-        *
-        * 2. 누적합 이용 가지치기
-        *  => 통과는 됨 ㅋㅋ. 하지만 더 좋은 풀이가 있는 듯
-        *
-        * 3. DP
-        *
-        *
-        * */
+         * 자바 : 2.5초 제한
+         * 2억 5천만 이하 연산
+         *
+         * n <= 2_000,
+         * m <= 1_000_000
+         *
+         * 1. 완탐
+         *  => m * n -> 2 * 10 ^ 9 : 시간초과
+         *
+         * 2. 누적합 이용 가지치기
+         *  => 통과는 됨 ㅋㅋ. 하지만 더 좋은 풀이가 있는 듯
+         *
+         * 3. DP
+         *
+         *
+         * */
 
-        FastIn in = new FastIn();
-        int n = in.nextInt();
-        int[] arr = new int[n];
-        int[] prefixSum = new int[n + 1];
-        int[][] results = new int[n + 1][n + 1];
-
+        br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] numbers = new int[n];
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            arr[i] = in.nextInt();
-            prefixSum[i + 1] = prefixSum[i] + arr[i];
-            for (int j = 1; j <= n; j++) {
-                results[i + 1][j] = -1;
-            }
+            numbers[i] = Integer.parseInt(st.nextToken());
         }
-        int m = in.nextInt();
 
+        int[][] palindrome = determinePalindrome(numbers);
+
+        int m = Integer.parseInt(br.readLine());
         StringBuilder answer = new StringBuilder();
-
         for (int i = 0; i < m; i++) {
-            int s = in.nextInt();
-            int e = in.nextInt();
+            st = new StringTokenizer(br.readLine());
+            int s = Integer.parseInt(st.nextToken()) - 1;
+            int e = Integer.parseInt(st.nextToken()) - 1;
 
-            if (results[s][e] == -1) {
-                results[s][e] = solve(s, e, arr, prefixSum);
-            }
-            answer.append(results[s][e]+"\n");
+            answer.append(palindrome[e - s][s] + "\n");
         }
-        System.out.println(answer);
+        System.out.print(answer);
+
+        br.close();
     }
 }
