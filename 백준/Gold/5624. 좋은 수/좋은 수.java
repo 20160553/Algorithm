@@ -31,7 +31,7 @@ public class Main {
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        final int ZERO_INDEX = 200_001;
+        final int ZERO_INDEX = 100_001;
 
         ArrayList<BitSet> dp = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
