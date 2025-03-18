@@ -74,7 +74,6 @@ public class Main {
         int left = 0;
         int answer = 0;
         for (int shootingArea : shootingAreas) {
-
             for (int i = left; i < animals.size(); i++) {
                 Coordinate animal = animals.get(i);
                 if (animal.x - shootingArea > l) {
@@ -87,7 +86,6 @@ public class Main {
                 if (v[i]) continue;
                 if (animal.canHunt(shootingArea, l)) {
                     v[i] = true;
-                    left = i + 1;
                     answer++;
                 }
             }
