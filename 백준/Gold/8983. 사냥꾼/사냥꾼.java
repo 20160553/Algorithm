@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static class Coordinate implements Comparable<Coordinate> {
@@ -68,27 +65,18 @@ public class Main {
         }
 
         Arrays.sort(shootingAreas);
-        Collections.sort(animals);
-        v = new boolean[animals.size()];
 
-        int left = 0;
         int answer = 0;
-        for (int shootingArea : shootingAreas) {
-            for (int i = left; i < animals.size(); i++) {
-                Coordinate animal = animals.get(i);
-                if (animal.x - shootingArea > l) {
-                    break;
-                }
-                if (shootingArea - animal.x < -l) {
-                    left = i + 1;
-                    continue;
-                }
-                if (v[i]) continue;
-                if (animal.canHunt(shootingArea, l)) {
-                    v[i] = true;
-                    answer++;
-                }
-            }
+        for (Coordinate animal : animals) {
+            int d = l - animal.y;
+            int start = animal.x - d, end = animal.x + d;
+            int left, right;
+            left = Arrays.binarySearch(shootingAreas, start);
+            right = Arrays.binarySearch(shootingAreas, end + 1);
+
+            if (left < 0) left = -left - 1;
+            if (right < 0) right = -right - 1;
+            if (left < right) answer++;
         }
 
         System.out.println(answer);
