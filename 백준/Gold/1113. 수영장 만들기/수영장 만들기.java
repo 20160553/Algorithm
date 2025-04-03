@@ -54,16 +54,18 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
 
         map = new int[n][m];
+        int max = 0;
 
         for (int i = 0; i < n; i++) {
             String row = br.readLine();
             for (int j = 0; j < m; j++) {
                 map[i][j] = row.charAt(j) - '0';
+                max= Math.max(max, map[i][j]);
             }
         }
 
         int cnt = 0;
-        for (int k = 1; k < 9; k++) {
+        for (int k = 1; k < max; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     Result result = null;
