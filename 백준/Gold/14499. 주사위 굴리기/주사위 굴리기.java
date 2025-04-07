@@ -1,86 +1,111 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
-    static int[][] arr = null;
-    //주사위 윗면 : 1, 아랫면 : 6, 
-    static int[] dice = new int[7];
-    static int n, m;
-    static int x;
-    static int y;
-    static int[] dx = {1, -1, 0, 0};
+    static int[][] map;
+    static int[]  dice;
     static int[] dy = {0, 0, -1, 1};
-    
-    public static void moveDice(int orientation) {
-        int tx = x + dx[orientation];
-        int ty = y + dy[orientation];
-        if (0 > tx || m - 1 < tx || 0 > ty || n - 1 < ty) {
-            return;
-        }
-        x = tx;
-        y = ty;
-        int preTop = dice[1];
-        int preBottom = dice[6];
-        if (orientation < 2) { //동, 서
-            if (orientation == 0) {
-                dice[1] = dice[4];
-                dice[6] = dice[3];
-                dice[4] = preBottom;
-                dice[3] = preTop;
+    static int[] dx = {1, -1, 0, 0};
+
+    static void rollDice(int direction) {
+        int previousTop, previousBottom;
+
+        previousTop = dice[0];
+        previousBottom = dice[5];
+
+        if (direction < 3) {
+
+            if (direction == 1) {
+                dice[5] = dice[2];
+                dice[0] = dice[3];
+                dice[2] = previousTop;
+                dice[3] = previousBottom;
             } else {
-                dice[1] = dice[3];
-                dice[6] = dice[4];
-                dice[4] = preTop;
-                dice[3] = preBottom;
+                dice[5] = dice[3];
+                dice[0] = dice[2];
+                dice[2] = previousBottom;
+                dice[3] = previousTop;
             }
-        } else { //북, 남
-            if (orientation == 2) {
-                dice[1] = dice[5];
-                dice[6] = dice[2];
-                dice[5] = preBottom;
-                dice[2] = preTop;
-            } else {
-                dice[1] = dice[2];
-                dice[6] = dice[5];
-                dice[2] = preBottom;
-                dice[5] = preTop;
-            }
-        }
-        if (arr[y][x] == 0) {
-            arr[y][x] = dice[6];
         } else {
-            dice[6] = arr[y][x];
-            arr[y][x] = 0;
+            if (direction == 3) {
+                dice[5] = dice[1];
+                dice[0] = dice[4];
+                dice[1] = previousTop;
+                dice[4] = previousBottom;
+            } else {
+                dice[5] = dice[4];
+                dice[0] = dice[1];
+                dice[1] = previousBottom;
+                dice[4] = previousTop;
+            }
         }
-        System.out.println(dice[1]);
     }
-    
+
+    static int move(int y, int x, int direction) {
+        int ny = y + dy[direction - 1];
+        int nx = x + dx[direction - 1];
+        int result = -1;
+        if (map == null || ny < 0 || nx < 0 || ny >= map.length || nx >= map[0].length)
+            return result;
+
+        rollDice(direction);
+        if (map[ny][nx] == 0) {
+            map[ny][nx] = dice[5];
+        } else {
+            dice[5] = map[ny][nx];
+            map[ny][nx] = 0;
+        }
+        result = dice[0];
+        return result;
+    }
+
+    static void initDice() {
+        dice = new int[6];
+    }
+
     public static void main(String[] args) throws IOException {
+        /*
+         *
+         * */
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder answer = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine());
-        
-        int k;
+        int n, m, y, x, k;
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         y = Integer.parseInt(st.nextToken());
         x = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
 
-        arr = new int[n][m];
+        map = new int[n][m];
+
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
-//          System.out.println(Arrays.toString(arr[i]));
         }
+
+        initDice();
+
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < k; i++) {
-            moveDice(Integer.parseInt(st.nextToken()) - 1);
+            int direction = Integer.parseInt(st.nextToken());
+            int result = move(y, x, direction);
+
+            if (result != -1) {
+                y = y + dy[direction - 1];
+                x = x + dx[direction - 1];
+
+                answer.append(result + "\n");
+            }
         }
+
+        System.out.println(answer);
+        br.close();
     }
 }
