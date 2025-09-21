@@ -81,22 +81,19 @@ public class Main {
         boolean[] roomFlags = new boolean[rooms.size()];
 
         // 방 별 bfs에 사용할 큐 리스트
-        ArrayList<LinkedList<int[]>> queueList = new ArrayList<>();
-        ArrayList<boolean[][]> vList = new ArrayList<>();
+        LinkedList<int[]> q = new LinkedList<>();
 
         for (int i = 0; i < rooms.size(); i++) {
             Room room = rooms.get(i);
 
             if (room.safetyCnt == 0) roomFlags[i] = true;
-            queueList.add(new LinkedList<>());
-            vList.add(new boolean[n][n]);
+            q = new LinkedList<>();
         }
 
         for (int idx : activateViruses) {
             Virus virus = virusInfos.get(idx);
             roomFlags[virus.roomNum] = true;
-            queueList.get(virus.roomNum).add(new int[]{virus.y, virus.x});
-            vList.get(virus.roomNum)[virus.y][virus.x] = true;
+            q.add(new int[]{virus.y, virus.x});
         }
 
         // 방 마다 안전공간 남는지 확인
@@ -104,15 +101,13 @@ public class Main {
             if (!flag) return;
         }
 
-        // 방 마다 bfs
-        int maxDay = -1;
-        for (int i = 0; i < queueList.size(); i++) {
-            int result = 0;
-            int safetyCnt = rooms.get(i).safetyCnt;
-            if (safetyCnt != 0)
-                result = bfs(queueList.get(i), vList.get(i), safetyCnt);
-            maxDay = Math.max(maxDay, result);
+        int safetyCnt = 0;
+        for (int i = 0; i < rooms.size(); i++) {
+            safetyCnt += rooms.get(i).safetyCnt;
         }
+
+        // 방 마다 bfs
+        int maxDay = maxDay = bfs(q, safetyCnt);
         if (answer < 0) {
             answer = maxDay;
             return;
@@ -120,8 +115,13 @@ public class Main {
         answer = Math.min(maxDay, answer);
     }
 
-    static int bfs(LinkedList<int[]> q, boolean[][] v, int safetyCnt) {
+    static int bfs(LinkedList<int[]> q, int safetyCnt) {
         int day = 0;
+
+        boolean[][] v = new boolean[n][n];
+        for (int[] p: q) {
+            v[p[0]][p[1]] = true;
+        }
 
         while (!q.isEmpty()) {
             if (safetyCnt <= 0)
