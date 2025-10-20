@@ -7,53 +7,69 @@ public class Main {
 
     static int MAX = 26;
     static int wordCnt = 0;
+    static int totalCnt = 5;
+    static boolean[] totalV = new boolean[26];
 
-    static HashSet<Character> defaultSet = new HashSet<>();
-
-
-    private HashSet<Character> getCharSet(String word) {
-        HashSet<Character> charSet = new HashSet<>();
-        charSet.addAll(defaultSet);
-
-        for (int i = 4; i < word.length() - 4; i++) {
-            char c = word.charAt(i);
-            charSet.add(c);
-        }
-
-        return charSet;
+    Main() {
+        totalV['a' - 'a'] = true;
+        totalV['n' - 'a'] = true;
+        totalV['t' - 'a'] = true;
+        totalV['i' - 'a'] = true;
+        totalV['c' - 'a'] = true;
     }
 
-    private int getReadableWordCnt(List<HashSet<Character>> sets, HashSet<Character> set) {
+    private void getCharSet(String word, boolean[] v) {
+        //a, n, t, i c 필수 포함.
+        v['a' - 'a'] = true;
+        v['n' - 'a'] = true;
+        v['t' - 'a'] = true;
+        v['i' - 'a'] = true;
+        v['c' - 'a'] = true;
+
+        for (int i = 4; i < word.length() - 4; i++) {
+            if (!totalV[word.charAt(i) - 'a']) {
+                totalCnt++;
+                totalV[word.charAt(i) - 'a'] = true;
+            }
+            v[word.charAt(i) - 'a'] = true;
+        }
+    }
+
+    private int getReadableWordCnt(boolean[][] words, boolean[] v) {
         int cnt = 0;
 
-        for (HashSet<Character> s: sets) {
-            if (set.containsAll(s)) {
-                cnt++;
+        for (boolean[] word: words) {
+            boolean flag = true;
+            for (int i = 0; i < v.length; i++) {
+                if (word[i] && !v[i]) {
+                    flag = false;
+                    break;
+                }
             }
+            if (flag) cnt++;
         }
 
         return cnt;
     }
 
-    private void solve(List<HashSet<Character>> sets, HashSet<Character> set, int num, int idx) {
+    private void solve(boolean[][] words, boolean[] v, int num, int idx) {
         if (num == 0) {
-            int cnt = getReadableWordCnt(sets, set);
+            int cnt = getReadableWordCnt(words, v);
             wordCnt = Math.max(cnt, wordCnt);
             return;
         }
         if (MAX - idx < num) {
             return;
         }
+        if (idx >= 26) return;
 
-        char c = (char)('a' + idx);
-        if (set.contains(c)) {
-            solve(sets, set, num, idx + 1);
-        } else {
-            set.add(c);
-            solve(sets, set, num - 1, idx + 1);
-            set.remove(c);
-            solve(sets, set, num, idx + 1);
+        if (!v[idx]) {
+            v[idx] = true;
+            solve(words, v, num - 1, idx + 1);
+            v[idx] = false;
         }
+
+        solve(words, v, num, idx + 1);
     }
 
     public static void main(String[] args) throws IOException {
@@ -78,35 +94,34 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
 
-        defaultSet.add('a');
-        defaultSet.add('n');
-        defaultSet.add('t');
-        defaultSet.add('i');
-        defaultSet.add('c');
+        boolean[][] words = new boolean[n][26];
 
-        HashSet<Character> totalSet = new HashSet<>();
         ArrayList<HashSet<Character>> sets = new ArrayList<>();
 
         Main main = new Main();
 
         for (int i = 0; i < n; i++) {
-            HashSet<Character> set = main.getCharSet(br.readLine());
-            sets.add(set);
-            totalSet.addAll(set);
+            main.getCharSet(br.readLine(), words[i]);
         }
 
         if (k < 5) {
             System.out.println(0);
             return;
         }
-        if (k >= totalSet.size()) {
+        if (k >= totalCnt) {
             System.out.println(n);
             return;
         }
 
-        HashSet<Character> chosenSet = new HashSet<>();
-        chosenSet.addAll(defaultSet);
-        main.solve(sets, chosenSet, k - defaultSet.size(), 0);
+        boolean[] v = new boolean[26];
+
+        v['a' - 'a'] = true;
+        v['n' - 'a'] = true;
+        v['t' - 'a'] = true;
+        v['i' - 'a'] = true;
+        v['c' - 'a'] = true;
+
+        main.solve(words, v, k - 5, 0);
 
         System.out.println(wordCnt);
         br.close();
