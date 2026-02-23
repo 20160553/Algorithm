@@ -135,25 +135,26 @@ public class Main {
             arr.add(num);
         }
 
-        ArrayList<HashMap<Integer, Status>> result = new ArrayList<>();
-        HashMap<Integer, Status> first = new HashMap<>();
-        first.put(0, new Status(0, 0, 0));
+        ArrayList<Status[]> result = new ArrayList<>();
+        Status[] first = new Status[11];
+        first[0] = new Status(0, 0, 0);
         result.add(first);
 
         for (int i = 1; i <= arr.size(); i++) {
-            HashMap<Integer, Status> currents = new HashMap<>();
-            HashMap<Integer, Status> prev = result.get(i - 1);
+            Status[] currents =  new Status[11];
+            Status[] prev = result.get(i - 1);
             int num = arr.get(i - 1);
 
-            for (Map.Entry<Integer, Status> entry: prev.entrySet()) {
-                List<Status> nexts = entry.getValue().next(num);
+            for (Status s: prev) {
+                if (s == null) continue;
+                List<Status> nexts = s.next(num);
                 for (Status status: nexts) {
                     if (status.getKey() < 0) continue;
-                    if (!currents.containsKey(status.getKey())) {
-                        currents.put(status.getKey(), status);
+                    if (currents[status.getKey()] == null) {
+                        currents[status.getKey()] = status;
                     } else {
-                        if (status.score < currents.get(status.getKey()).score) {
-                            currents.put(status.getKey(), status);
+                        if (status.score < currents[status.getKey()].score) {
+                            currents[status.getKey()] = status;
                         }
                     }
                 }
@@ -162,8 +163,9 @@ public class Main {
         }
 
         int answer = 400_004;
-        for(Status status: result.get(result.size() - 1).values()) {
+        for(Status status: result.get(result.size() - 1)) {
 //            if (result.size() > 2 && status.getKey() < 5) continue;
+            if (status == null) continue;
             answer = Math.min(answer, status.score);
         }
         System.out.println(answer);
