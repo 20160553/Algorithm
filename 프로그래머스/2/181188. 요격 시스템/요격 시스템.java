@@ -33,34 +33,20 @@ class Solution {
             missiles.add(new Missile(target[0], target[1]));
         }
         Collections.sort(missiles);
-        boolean[] destroyed = new boolean[n];
         // System.out.println(missiles);
         // System.out.println(Arrays.toString(destroyed));
         
         // 풀이
         int answer = 0;
-        int current = 0;
-        while (current < n) {
-            //currentMissile
-            Missile cM = missiles.get(current);
-            boolean status = destroyed[current];
+        int lastLaunchedPosition = -1;
+        
+        for (int i = 0; i < n; i++) {
+            Missile m = missiles.get(i);
             
-            if (status) {
-                current++;
-                continue;
+            if (lastLaunchedPosition <= m.start) {
+                answer++;
+                lastLaunchedPosition = m.end;
             }
-            // System.out.println(cM);
-            destroyed[current] = true;
-            answer++;
-            
-            for (int i = current + 1; i < n; i++) {
-                //nextMissile
-                Missile nM = missiles.get(i);
-                if (nM.start < cM.end) {
-                    destroyed[i] = true;
-                }
-            }
-            current++;
         }
         
 
