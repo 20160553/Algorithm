@@ -7,7 +7,7 @@ class Solution {
         
         HashSet<String> unSignificants = new HashSet<>();
         HashSet<String> significants = new HashSet<>();
-        
+         
         boolean[] spoilerFlag = new boolean[n];
         
         for (int i = 0; i < spoiler_ranges.length; i++) {
@@ -46,12 +46,8 @@ class Solution {
             flag = false;
         }
         
-        for (String str: significants) {
-            if (!unSignificants.contains(str)) {
-                answer++;
-            }
-        }
+        significants.removeAll(unSignificants);
         
-        return answer;
+        return significants.size();
     }
 }
