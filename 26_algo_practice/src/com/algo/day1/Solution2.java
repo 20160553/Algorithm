@@ -112,12 +112,34 @@ public class Solution2 {
 }
 
 /*
- * 모범 답안: SCC(Kosaraju) + 응축 DAG + 위상정렬 DP
+ * 모범 답안 (수정): SCC(Kosaraju) + 응축 DAG + dpEnter/dpStart 이중 DP
  *
- * 핵심 아이디어:
- * 1. Kosaraju's로 SCC 분리 → 사이클을 단일 노드로 압축
- * 2. 응축 DAG 구성 (각 SCC 노드 가중치 = SCC 크기)
- * 3. DAG 위상정렬 DP → 최장 가중 경로 = 방문 가능한 최대 노드 수
+ * 기존 풀이의 오류:
+ *   dp[c] = sz[c] + max(dp[succ]) 는 SCC 전체 순회 후 탈출이 항상 가능하다고 가정 → 오답(과대 추정)
+ *   예시: {1}→{2,3,4}→{5}→{6} = 1+3+1+1 = 6 (실제 불가능한 경로)
+ *   1→2 진입 시 2→3→4 순회하면 4→2(방문됨) 막혀서 탈출 불가
+ *
+ * 핵심 관찰:
+ *   SCC 진입 방식에 따라 순회 가능한 노드 수가 달라진다.
+ *   ┌─────────────────────────────────────────────────────────────────┐
+ *   │ dpStart[c]: SCC c 내부 어디서든 시작 (시작점 자유 선택)          │
+ *   │   → 최적 시작점 선택으로 sz[c] 전부 순회 후 탈출 가능           │
+ *   │   → dpStart[c] = sz[c] + max(dpEnter[후계 SCC])               │
+ *   │                                                                 │
+ *   │ dpEnter[c]: 외부 SCC에서 진입 (진입 노드 = 탈출 노드로 고정)    │
+ *   │   → 탈출 옵션 A: 진입 노드 1개만 쓰고 즉시 탈출 후 계속        │
+ *   │   → 탈출 옵션 B: sz[c] 전부 쓰고 여기서 종료 (terminal)        │
+ *   │   → dpEnter[c] = max(sz[c], 1 + max(dpEnter[후계 SCC]))       │
+ *   └─────────────────────────────────────────────────────────────────┘
+ *
+ * 예시 추적 ({1}=A, {2,3,4}=B, {5}=C, {6}=D):
+ *   dpEnter[D]=1, dpStart[D]=1
+ *   dpEnter[C]=max(1, 1+1)=2,  dpStart[C]=1+1=2
+ *   dpEnter[B]=max(3, 1+2)=3,  dpStart[B]=3+2=5  ← 경로: 3→4→2→5→6
+ *   dpStart[A]=1+max(3,1)=4
+ *   정답 = max(5,4,2,1) = 5
+ *
+ * ※ 예시 출력 4 역시 오류 가능성 있음 (최장 단순 경로 3→4→2→5→6 = 5노드 누락)
  *
  * 시간복잡도: O(N+M)
  */
@@ -129,8 +151,7 @@ class Solution2Answer {
     static Deque<Integer> order = new ArrayDeque<>();
     static int[] comp;
 
-    // Step 1: 원본 그래프 DFS, 종료 순서 기록
-    // 반복 DFS 필수 - N=10^5에서 재귀 시 스택 오버플로우
+    // Step 1: 원본 그래프 DFS, 종료 순서 기록 (반복 DFS - N=10^5 스택 오버플로우 방지)
     static void dfs1(int s) {
         Deque<int[]> stk = new ArrayDeque<>();
         vis[s] = true;
@@ -175,11 +196,11 @@ class Solution2Answer {
             rg.get(b).add(a);
         }
 
-        // Kosaraju Step 1: 원본 그래프 종료 순서 수집
+        // Kosaraju Step 1
         vis = new boolean[n + 1];
         for (int i = 1; i <= n; i++) if (!vis[i]) dfs1(i);
 
-        // Kosaraju Step 2: 역방향 그래프에서 SCC 분리
+        // Kosaraju Step 2
         comp = new int[n + 1];
         Arrays.fill(comp, -1);
         int[] sz = new int[n + 1];
@@ -189,7 +210,7 @@ class Solution2Answer {
             if (comp[v] < 0) dfs2(v, sccCnt++, sz);
         }
 
-        // 응축 DAG 구성 (SCC 간 중복 간선 제거)
+        // 응축 DAG 구성
         List<Set<Integer>> dag = new ArrayList<>();
         int[] indeg = new int[sccCnt];
         for (int i = 0; i < sccCnt; i++) dag.add(new HashSet<>());
@@ -198,20 +219,30 @@ class Solution2Answer {
                 if (comp[u] != comp[v] && dag.get(comp[u]).add(comp[v]))
                     indeg[comp[v]]++;
 
-        // 위상정렬 DP: dp[i] = SCC i까지 경로에서 방문 가능한 최대 노드 수
-        int[] dp = Arrays.copyOf(sz, sccCnt);
+        // 위상정렬 순서 수집 (Kahn's)
+        List<Integer> topo = new ArrayList<>();
         Queue<Integer> q = new LinkedList<>();
         for (int i = 0; i < sccCnt; i++) if (indeg[i] == 0) q.offer(i);
-
-        int ans = 0;
         while (!q.isEmpty()) {
             int cur = q.poll();
-            ans = Math.max(ans, dp[cur]);
-            for (int nxt : dag.get(cur)) {
-                dp[nxt] = Math.max(dp[nxt], dp[cur] + sz[nxt]);
-                if (--indeg[nxt] == 0) q.offer(nxt);
-            }
+            topo.add(cur);
+            for (int nxt : dag.get(cur)) if (--indeg[nxt] == 0) q.offer(nxt);
         }
+
+        // 역위상 순서로 DP (sink → source)
+        int[] dpEnter = new int[sccCnt];
+        int[] dpStart = new int[sccCnt];
+        for (int i = topo.size() - 1; i >= 0; i--) {
+            int cur = topo.get(i);
+            int bestSucc = 0;
+            for (int nxt : dag.get(cur)) bestSucc = Math.max(bestSucc, dpEnter[nxt]);
+            // bestSucc == 0 이면 terminal SCC: dpEnter = sz, dpStart = sz (자동 처리)
+            dpEnter[cur] = Math.max(sz[cur], 1 + bestSucc);
+            dpStart[cur] = sz[cur] + bestSucc;
+        }
+
+        int ans = 0;
+        for (int i = 0; i < sccCnt; i++) ans = Math.max(ans, dpStart[i]);
         System.out.println(ans);
     }
 }
