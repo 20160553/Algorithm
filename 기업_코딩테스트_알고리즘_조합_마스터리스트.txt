@@ -1,0 +1,135 @@
+기업 코딩테스트 알고리즘 조합 마스터 리스트
+
+본 문서는 실제 기업 코딩테스트에서 자주 등장하거나 출제가 가능한 2가지
+및 3가지 알고리즘 조합을 정리한 학습 체크리스트이다.
+
+탐색+구현
+
+-   BFS + 구현
+-   BFS + 시뮬레이션
+-   BFS + Bitmask
+-   BFS + Priority Queue
+-   DFS + 백트래킹
+-   DFS + DP
+-   DFS + Union-Find
+-   DFS + Trie
+
+탐색+최적화
+
+-   Binary Search + Greedy
+-   Binary Search + Prefix Sum
+-   Binary Search + Two Pointer
+-   Binary Search + DP
+-   Binary Search + Graph
+
+자료구조
+
+-   Two Pointer + Sliding Window
+-   Two Pointer + HashMap
+-   Sliding Window + HashMap
+-   Sliding Window + Priority Queue
+-   Prefix Sum + HashMap
+-   Prefix Sum + DP
+
+그래프
+
+-   Graph + BFS
+-   Graph + DFS
+-   Graph + Priority Queue(Dijkstra)
+-   Graph + Queue(Topological Sort)
+-   Graph + DP
+-   Union-Find + Sorting(Kruskal)
+-   Greedy + Union-Find
+
+DP
+
+-   DP + Bitmask
+-   DP + Binary Search(LIS)
+-   DP + Prefix Sum
+-   DP + Knapsack
+
+고급 자료구조
+
+-   Trie + DFS
+-   Trie + HashMap
+-   Segment Tree + Lazy Propagation
+-   Segment Tree + Binary Search
+-   Fenwick Tree + Coordinate Compression
+-   Coordinate Compression + Segment Tree
+
+문자열
+
+-   KMP + DP
+-   KMP + Hash
+
+시뮬레이션
+
+-   Simulation + BFS
+-   Simulation + Priority Queue
+-   Simulation + HashMap
+-   Simulation + Queue
+
+3가지 알고리즘 조합
+
+-   DFS + 백트래킹 + Bitmask
+-   DFS + DP + Memoization
+-   BFS + Bitmask + DP
+-   BFS + Priority Queue + Graph
+-   BFS + Simulation + Queue
+-   Binary Search + Greedy + Prefix Sum
+-   Binary Search + DP + LIS
+-   Binary Search + Graph + Dijkstra
+-   Two Pointer + Sliding Window + HashMap
+-   Sliding Window + HashMap + Prefix Sum
+-   Prefix Sum + HashMap + Binary Search
+-   Greedy + Sorting + Priority Queue
+-   Greedy + Union-Find + Sorting
+-   Graph + DFS + DP(Tree DP)
+-   Graph + BFS + Simulation
+-   Graph + Priority Queue + Dijkstra
+-   Graph + Queue + Topological Sort + DP
+-   Union-Find + Graph + Sorting
+-   DP + Bitmask + Graph
+-   DP + Prefix Sum + Knapsack
+-   Trie + DFS + Backtracking
+-   Trie + HashMap + String
+-   KMP + Hash + DP
+-   Segment Tree + Lazy Propagation + Binary Search
+-   Fenwick Tree + Coordinate Compression + Sorting
+-   Coordinate Compression + Segment Tree + Binary Search
+-   Simulation + BFS + Bitmask
+-   Simulation + Priority Queue + HashMap
+-   Simulation + Queue + Graph
+
+학습 우선순위 TOP 30
+
+1.  BFS + 구현
+2.  DFS + 백트래킹
+3.  Binary Search + Greedy
+4.  Binary Search + Prefix Sum
+5.  Two Pointer + Sliding Window
+6.  Sliding Window + HashMap
+7.  Prefix Sum + HashMap
+8.  Greedy + Sorting
+9.  Greedy + Priority Queue
+10. Graph + Dijkstra
+11. Topological Sort + DP
+12. Graph + BFS
+13. Graph + DFS
+14. Union-Find + Kruskal
+15. DP + Bitmask
+16. DP + LIS
+17. Trie + DFS
+18. Segment Tree + Lazy Propagation
+19. Coordinate Compression + Segment Tree
+20. Simulation + BFS
+21. BFS + Bitmask + DP
+22. Binary Search + Greedy + Prefix Sum
+23. Graph + Tree DP
+24. Simulation + BFS + Bitmask
+25. Trie + Backtracking
+26. Fenwick Tree + Coordinate Compression
+27. Segment Tree + Binary Search
+28. KMP + Hash
+29. DP + Knapsack
+30. Graph + BFS + Simulation

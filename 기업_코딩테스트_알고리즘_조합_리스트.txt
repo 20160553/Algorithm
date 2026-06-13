@@ -1,0 +1,241 @@
+기업 코딩테스트 알고리즘 2가지 조합 리스트
+
+BFS + 구현
+
+-   BFS + 시뮬레이션
+-   BFS + 좌표 이동
+-   BFS + 회전
+-   BFS + 상태 관리
+
+DFS + 백트래킹
+
+-   DFS + 순열
+-   DFS + 조합
+-   DFS + 부분집합
+-   DFS + Bitmask
+
+BFS + Bitmask
+
+-   열쇠-문 문제
+-   방문 상태 추가 관리
+-   최단경로 + 상태압축
+
+DFS + DP
+
+-   Tree DP
+-   Memoization
+-   게임 탐색
+
+BFS + DP
+
+-   최단거리 + 비용 최소화
+-   상태 전이
+
+BFS + Priority Queue
+
+-   가중치가 다른 탐색
+-   Dijkstra 응용
+
+DFS + Union-Find
+
+-   연결 요소 판별
+-   사이클 검사
+
+Binary Search + Greedy
+
+-   최소값 결정
+-   최대값 결정
+-   Parametric Search
+
+Binary Search + Prefix Sum
+
+-   구간 조건 판별
+-   가능한지 검사
+
+Binary Search + Two Pointer
+
+-   길이 최적화
+-   거리 최적화
+
+Binary Search + DP
+
+-   최적값 탐색
+-   LIS 응용
+
+Binary Search + Graph
+
+-   조건 만족 여부 탐색
+-   제한된 경로
+
+Two Pointer + HashMap
+
+-   중복 제거
+-   가장 긴 부분 문자열
+
+Two Pointer + Sliding Window
+
+-   부분합
+-   연속 구간
+
+Sliding Window + HashMap
+
+-   문자열 문제
+-   빈도수 관리
+
+Sliding Window + Priority Queue
+
+-   윈도우 최대/최소
+
+Prefix Sum + HashMap
+
+-   부분합
+-   누적 빈도
+
+Prefix Sum + Binary Search
+
+-   구간 최적화
+
+Prefix Sum + DP
+
+-   구간 비용 최소화
+
+Greedy + Sorting
+
+-   회의실 배정
+-   활동 선택
+-   Interval Scheduling
+
+Greedy + Priority Queue
+
+-   작업 스케줄링
+-   CPU 스케줄
+
+Greedy + Union-Find
+
+-   Kruskal MST
+
+Graph + Priority Queue
+
+-   Dijkstra
+
+Graph + Queue
+
+-   Topological Sort
+
+Graph + DFS
+
+-   SCC
+-   사이클 탐색
+-   연결 요소
+
+Graph + BFS
+
+-   최단거리
+-   Flood Fill
+
+Graph + DP
+
+-   DAG DP
+-   Tree DP
+
+Union-Find + Sorting
+
+-   MST
+-   네트워크 연결
+
+DP + Bitmask
+
+-   외판원 순회(TSP)
+-   상태압축 DP
+
+DP + Prefix Sum
+
+-   구간 DP
+
+DP + Binary Search
+
+-   LIS O(N log N)
+
+DP + Knapsack
+
+-   배낭 문제
+-   자원 분배
+
+Trie + DFS
+
+-   단어 찾기
+-   Boggle
+
+Trie + HashMap
+
+-   자동완성
+-   검색 추천
+
+KMP + DP
+
+-   문자열 분할
+
+KMP + Hash
+
+-   문자열 검색
+
+Segment Tree + Binary Search
+
+-   K번째 원소
+-   Order Statistic
+
+Segment Tree + Lazy Propagation
+
+-   구간 업데이트
+-   구간 질의
+
+Fenwick Tree + Coordinate Compression
+
+-   역전쌍(Inversion Count)
+
+Coordinate Compression + Segment Tree
+
+-   순위 계산
+-   구간 통계
+
+Simulation + BFS
+
+-   아기상어 유형
+-   연구소 유형
+
+Simulation + Priority Queue
+
+-   시간 기반 이벤트 처리
+
+Simulation + HashMap
+
+-   캐시
+-   로그 분석
+
+Simulation + Queue
+
+-   프로세스 관리
+-   프린터 큐
+
+TOP 20 조합
+
+1.  BFS + 구현
+2.  DFS + 백트래킹
+3.  Binary Search + Greedy
+4.  Binary Search + Prefix Sum
+5.  Two Pointer + Sliding Window
+6.  Sliding Window + HashMap
+7.  Prefix Sum + HashMap
+8.  Greedy + Sorting
+9.  Greedy + Priority Queue
+10. Graph + Priority Queue(Dijkstra)
+11. Graph + Queue(Topological Sort)
+12. Graph + DFS
+13. Graph + BFS
+14. Union-Find + Sorting(Kruskal)
+15. DP + Bitmask
+16. DP + Binary Search(LIS)
+17. Trie + DFS
+18. Segment Tree + Lazy Propagation
+19. Coordinate Compression + Segment Tree
+20. Simulation + BFS
